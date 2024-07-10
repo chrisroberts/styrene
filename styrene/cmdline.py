@@ -246,7 +246,7 @@ def main():
     # Process bundles
     for spec_file in args:
         try:
-            spec = configparser.SafeConfigParser()
+            spec = configparser.ConfigParser()
             spec.read(spec_file, encoding="utf-8")
         except Exception:
             logger.exception(
