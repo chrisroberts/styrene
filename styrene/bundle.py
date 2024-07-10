@@ -787,53 +787,53 @@ class NativeBundle:
 
         # Conditional fragments
 
-        if self.icon:
-            frag = dedent("""
-                Icon "%(stub_name)s\%(icons_subdir)s\%(icon)s.ico"
-                UninstallIcon "%(stub_name)s\%(icons_subdir)s\%(icon)s.ico"
-            """) % substs
-            substs["icon_fragment"] = frag
+        # if self.icon:
+        #     frag = dedent("""
+        #         Icon "%(stub_name)s\%(icons_subdir)s\%(icon)s.ico"
+        #         UninstallIcon "%(stub_name)s\%(icons_subdir)s\%(icon)s.ico"
+        #     """) % substs
+        #     substs["icon_fragment"] = frag
 
-        if self.launchers:
+        # if self.launchers:
 
-            # Shortcuts
-            ufrag = dedent(r"""
-                RMDIR /r "$SMPROGRAMS\%(sc_folder)s"
-            """) % substs
-            ifrag = dedent(r"""
-                RMDIR /r "$SMPROGRAMS\%(sc_folder)s"
-                CreateDirectory "$SMPROGRAMS\%(sc_folder)s"
-            """) % substs
-            for launcher in self.launchers:
-                ifrag += launcher.get_install_nsis(root, self)
-                ufrag += launcher.get_uninstall_nsis(root, self)
-            substs["launcher_install_fragments"] = ifrag
-            substs["launcher_uninstall_fragments"] = ufrag
+        #     # Shortcuts
+        #     ufrag = dedent(r"""
+        #         RMDIR /r "$SMPROGRAMS\%(sc_folder)s"
+        #     """) % substs
+        #     ifrag = dedent(r"""
+        #         RMDIR /r "$SMPROGRAMS\%(sc_folder)s"
+        #         CreateDirectory "$SMPROGRAMS\%(sc_folder)s"
+        #     """) % substs
+        #     for launcher in self.launchers:
+        #         ifrag += launcher.get_install_nsis(root, self)
+        #         ufrag += launcher.get_uninstall_nsis(root, self)
+        #     substs["launcher_install_fragments"] = ifrag
+        #     substs["launcher_uninstall_fragments"] = ufrag
 
-            # File associations
-            # Only one per extension even if lots of launchers claim it.
-            ifrag = ""
-            ufrag = ""
-            ext_map = {}
-            for launcher in self.launchers:
-                ifrag += launcher.get_file_assoc_nsis(root, self, ext_map)
-            for launcher in self.launchers:
-                ufrag += launcher.get_file_unassoc_nsis(root, self, ext_map)
-            if ext_map:
-                ifrag += dedent("""
-                    Section "Update filename associations"
-                        SectionIn RO
-                        !insertmacro UpdateFileAssocs
-                    SectionEnd
-                """)
-                ufrag += dedent("""
-                    Section "un.Update filename associations"
-                        SectionIn RO
-                        !insertmacro UpdateFileAssocs
-                    SectionEnd
-                """)
-            substs["launcher_assoc_fragments"] = ifrag
-            substs["launcher_unassoc_fragments"] = ufrag
+        #     # File associations
+        #     # Only one per extension even if lots of launchers claim it.
+        #     ifrag = ""
+        #     ufrag = ""
+        #     ext_map = {}
+        #     for launcher in self.launchers:
+        #         ifrag += launcher.get_file_assoc_nsis(root, self, ext_map)
+        #     for launcher in self.launchers:
+        #         ufrag += launcher.get_file_unassoc_nsis(root, self, ext_map)
+        #     if ext_map:
+        #         ifrag += dedent("""
+        #             Section "Update filename associations"
+        #                 SectionIn RO
+        #                 !insertmacro UpdateFileAssocs
+        #             SectionEnd
+        #         """)
+        #         ufrag += dedent("""
+        #             Section "un.Update filename associations"
+        #                 SectionIn RO
+        #                 !insertmacro UpdateFileAssocs
+        #             SectionEnd
+        #         """)
+        #     substs["launcher_assoc_fragments"] = ifrag
+        #     substs["launcher_unassoc_fragments"] = ufrag
 
         # Load and subst the template file
         nsi_template_file = os.path.join(
