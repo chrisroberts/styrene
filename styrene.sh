@@ -10,6 +10,9 @@ export PYTHONPATH=.
 
 if test "x$MSYSTEM" = "xMSYS"; then
     echo >&2 "+++ MSYS shell detected, building all native architectures."
+    # Scrub the packages in the cache prior to run
+    rm -f /var/cache/pacman/pkg/*.zst
+
     for s in MINGW64 MINGW32; do
         echo >&2 "+++ Running $PACKAGE in a $s login shell..."
         cmd="$PYTHON $PACKAGE"' "$@"'
